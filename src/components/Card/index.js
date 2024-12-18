@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useFavoritosContext } from "../../pages/Context/Favoritos";
+import { useFavoritosContext } from "../../context/Favoritos";
 import styles from "../../components/Card/Card.module.css";
 import iconFavorito from "../../components/Card/iconFavorito.png";
 import iconNoFavorito from "../../components/Card/iconNoFavorito.png";
