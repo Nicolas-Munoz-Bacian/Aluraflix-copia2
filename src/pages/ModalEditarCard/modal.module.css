@@ -1,31 +1,45 @@
-.Rodapie{
-    position: relative;
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Mantener el fondo negro translúcido */
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 20px;
-    background-color: #9da5ac;
+    align-items: center;
+    z-index: 1000;
 }
 
-.Pie h2 {
-    font-weight: 400;
-    font-size: 18px;
-    color: var(--blanco);
+.modalContent {
+    background: black; /* Cambiado a negro */
+    color: white; /* Cambia el texto a blanco para contraste */
+    border: 2px solid cyan; /* Añadido borde celeste cian */
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
 }
 
-.logo {
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0 10px 0;
-    width: 50px;
-    height: auto;
-  }
+/* Añadir estilos para los labels */
+.modalContent label {
+    color: cyan; /* Cambiado el color de los labels a celeste cian */
+}
 
-.logoalura {
-    position: relative;
-    width: 160px;
-    height: auto;
+button {
+    background-color: black; /* Fondo negro */
+    color: white; /* Texto blanco */
+    border: 2px solid cyan; /* Borde cyan de 2px */
+    border-radius: 5px; /* Bordes redondeados, ajusta si es necesario */
+    padding: 10px 15px; /* Agregar padding para un mejor aspecto */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: rgba(91, 104, 108, 0.8); /* Añadir transición para el efecto hover */
+    gap: 10px;
+    margin-top: 5px;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Efecto hover para oscurecer un poco el fondo */
 }
 
 /* ------------------------------ Responsividad ---------------------------------------*/
@@ -49,45 +63,15 @@
         width: 50%;
     }
     .card_list{
-        width: 80%;
+        width: 100%;
         height: auto;
         align-items: center;
         justify-content: center;
         margin-left: 60px;
     }
-    .card {
-        height: auto;
-        width: 100%;
-        margin: 0 auto;
-    }
-    .card img {
-        max-width: 80%;
-        height: auto;
-    }
-    .card-container--value {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-  
-    .banner .backend .innovacionYgestion{
-      display: flex;
-    }
   
     .container {
       width: 80%;
-  }
-
-  .texto{
-    display: flex;
-    justify-content: center;
-    width: 30%;
-  }
-
-  .Rodapie{
-    align-items: center;
-    justify-content: center;
-    display: grid;
   }
   }
   
@@ -111,21 +95,12 @@
     .container {
       width: 80%;
   }
-  .texto{
-    display: flex;
-    justify-content: center;
-  }
-
-  .h2 .Rodapie{
-    justify-content: center;
-    display: flex;
-  }
   }
   
   /* Escritorio */
   @media (min-width: 991px) { /* Ajuste del breakpoint máximo */
     .container{
-        width: 80%;
+        width:100%;
     }
   
     .products-container {
@@ -133,20 +108,6 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr); /* Cambiar a dos columnas */
         gap: 20px; /* Espaciado entre columnas */
-    }
-    .card {
-        height: 500px;
-        width: 100%;
-        max-width: 300px;
-    }
-    .card img {
-        max-width: 100%;
-        height: auto;
-    }
-    .card-container--value {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
   }
   

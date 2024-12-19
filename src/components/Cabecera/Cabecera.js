@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
-import styles from "./Cabecera.module.css"
+import styles from '../../components/Cabecera/cabecera.module.css'
 import logo from "./logo-Main.png"
-import CabeceraLink from "../CabeceraLink/CabeceraLink"
+import CabeceraLink from "../CabeceraLink/Cabeceralink"
 
 function Cabecera(){
     return(

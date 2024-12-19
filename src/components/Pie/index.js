@@ -1,4 +1,4 @@
-import styles from "./Pie.module.css"
+import styles from '../../components/Pie/Pie.module.css'
 import logo from '../../components/Pie/Sello Nicolás.png'
 import logoalura from '../../components/Pie/logo-Main.png'
 
