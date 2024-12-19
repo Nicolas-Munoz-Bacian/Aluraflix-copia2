@@ -14,6 +14,7 @@ function Inicio() {
   const [videos, setVideos] = useState([]);
   const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
   const [videoToEdit, setVideoToEdit] = useState(null); // Estado para guardar el video a editar
+  
 
   useEffect(() => {
     fetch(
@@ -60,6 +61,7 @@ function Inicio() {
     setVideoToEdit(null);
     setShowModal(false);
   };
+  
 
   return (
     <>

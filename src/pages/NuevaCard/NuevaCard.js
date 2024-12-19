@@ -13,7 +13,9 @@ function NuevaCard({ initialVideos = [] }) {
     };
 
     const handleSave = (videoData) => {
-        setVideos(prevVideos => [...prevVideos, videoData]);
+        const updatedVideos = [...videos, videoData];
+        setVideos(updatedVideos);
+        localStorage.setItem('videos', JSON.stringify(updatedVideos));
         setShowModal(false);
     };
 
