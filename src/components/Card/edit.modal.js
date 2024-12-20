@@ -1,21 +1,41 @@
 import React, { useState } from 'react';
 import styles from '../../pages/ModalEditarCard/modal.module.css';
+import inicio from '../../pages/inicio';
 
 function EditModal({ initialData, onClose, onSave, onDelete }) {
     const [formData, setFormData] = useState(initialData);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevState) => ({ ...prevState, [name]: value }));
+        setFormData(prevState => ({ ...prevState, [name]: value }));
     };
 
-    const saveChanges = () => {
-        onSave(formData);
-        onClose();
+    const saveChanges = async () => {
+        try {
+            const method = inicio ? 'PUT' : 'POST';
+            const url = inicio ? `http://localhost:3000/videos/${inicio.id}` : 'http://localhost:3000/videos';
+
+
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                const savedProduct = await response.json(); // Obtiene la respuesta del producto guardado
+                onSave(savedProduct); // Llama a la función onSave para actualizar la lista en la página principal
+                onClose(); // Cierra el modal
+            } else {
+                throw new Error('Error al guardar cambios');
+            }
+        } catch (error) {
+            console.error('Error al guardar cambios:', error);
+            alert('Ocurrió un error al guardar los cambios.');
+        }
     };
 
     const clearChanges = () => {
-        // Si deseas vaciar los campos, usa objetos vacíos
         setFormData(initialData); // Restablece los campos a su estado inicial
     };
 
@@ -23,7 +43,6 @@ function EditModal({ initialData, onClose, onSave, onDelete }) {
         onDelete(initialData.id);
         onClose();
     };
-
 
     return (
         <div className={styles.modal}>
@@ -74,6 +93,7 @@ function EditModal({ initialData, onClose, onSave, onDelete }) {
                 </div>
                 <button onClick={saveChanges}>Guardar</button>
                 <button onClick={clearChanges}>Limpiar</button>
+                <button onClick={handleDelete}>Eliminar</button>
                 <button onClick={onClose}>Cerrar</button>
             </div>
         </div>

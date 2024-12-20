@@ -2,24 +2,21 @@ import Titulo from "../../components/Titulo";
 import Banner from "../../components/Banner";
 import Card from "../../components/Card";
 import styles from "../../pages/inicio/index.module.css";
-import home from "../../pages/inicio/home.jpg"
+import home from "../../pages/inicio/home.jpg";
 import frontend from "../../pages/inicio/front end.png";
 import backend from "../../pages/inicio/back end.png";
 import innovacionYgestion from "../inicio/innovación y gestión.png";
+import videos from "../../components/data/db.json"
 import { useState, useEffect } from "react";
 import EditModal from "../../pages/ModalEditarCard/modal";
-import NuevaCard from "../../pages/NuevaCard/NuevaCard"
 
 function Inicio() {
   const [videos, setVideos] = useState([]);
-  const [showModal, setShowModal] = useState(false); // Estado para controlar la visibilidad del modal
-  const [videoToEdit, setVideoToEdit] = useState(null); // Estado para guardar el video a editar
-  
+  const [showModal, setShowModal] = useState(false);
+  const [videoToEdit, setVideoToEdit] = useState(null);
 
   useEffect(() => {
-    fetch(
-      "https://my-json-server.typicode.com/DaniRiverol/alura-cinema-api/videos"
-    )
+    fetch("")
       .then((response) => response.json())
       .then((data) => {
         setVideos(data);
@@ -32,22 +29,8 @@ function Inicio() {
   };
 
   const handleSave = (updatedVideo) => {
-    const updatedVideos = videos.map((video) => {
-      if (video.id === updatedVideo.id) {
-        return updatedVideo;
-      }
-      return video;
-    });
+    const updatedVideos = videos.map((video) => (video.id === updatedVideo.id ? updatedVideo : video));
     setVideos(updatedVideos);
-    setShowModal(false);
-    setVideoToEdit(null);
-  };
-
-  const addVideo = (newVideo) => {
-    setVideos([...videos, newVideo]);
-  };
-
-  const handleCloseModal = () => {
     setShowModal(false);
     setVideoToEdit(null);
   };
@@ -61,7 +44,6 @@ function Inicio() {
     setVideoToEdit(null);
     setShowModal(false);
   };
-  
 
   return (
     <>
