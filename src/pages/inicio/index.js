@@ -16,7 +16,7 @@ function Inicio() {
   const [videoToEdit, setVideoToEdit] = useState(null);
 
   useEffect(() => {
-    fetch("")
+    fetch("https://raw.githubusercontent.com/Nicolas-Munoz-Bacian/Aluraflix-copia2/refs/heads/main/src/data/db.json")
       .then((response) => response.json())
       .then((data) => {
         setVideos(data);
