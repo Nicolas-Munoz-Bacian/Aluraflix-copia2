@@ -4,32 +4,31 @@ import Banner from "../../components/Banner";
 import Titulo from "../../components/Titulo";
 import NotFound from "../../pages/NotFound";
 import styles from "../../pages/Player/Player.module.css";
-import videos from "../../components/data/db.json"; // Asegúrate de que la ruta de importación sea correcta
+import videos from "../../components/data/db.json";
 
 function Player() {
     const [video, setVideo] = useState(null);
     const parametros = useParams();
 
     useEffect(() => {
+        // Encuentra el video utilizand el parámetro 'id'
         const videoEncontrado = videos.find(video => video.id === Number(parametros.id));
         if (videoEncontrado) {
-            const videoURL = convertToEmbedURL(videoEncontrado.video); // Usa `video` como llave
+            const videoURL = convertToEmbedURL(videoEncontrado.video);
             setVideo({ ...videoEncontrado, video: videoURL });
         }
     }, [parametros.id]);
 
     const convertToEmbedURL = (url) => {
-        // Transforma los links de YouTube para embeber el iframe
-        const youtuShort = /youtu\.be\/([^?]+)/;
-        const youtubeStandard = /youtube\.com\/watch\?v=([^&]+)/;
-        
-        if (youtuShort.test(url)) {
-            return url.replace(youtuShort, "www.youtube.com/embed/$1");
+        // Transforma URLs estandard y acortadas de YouTube para ser embebidas
+        if (url.includes('youtu.be')) {
+            return url.replace('youtu.be/', 'www.youtube.com/embed/');
         }
-        if (youtubeStandard.test(url)) {
-            return url.replace(youtubeStandard, "www.youtube.com/embed/$1");
+        if (url.includes('watch?v=')) {
+            const videoID = url.split('watch?v=')[1].split('&')[0]; // Extrae solo el VideoID
+            return `https://www.youtube.com/embed/${videoID}`;
         }
-        return url;
+        return url; // Retorna la URL sin cambios si no son de YouTube
     };
 
     if (!video) return <NotFound />;

@@ -22,10 +22,10 @@ function Card({ id, capa, titulo, descripcion, video, onDelete, onSave, onClear 
 
     return (
         <div className={styles.container}>
-            <Link to={`/player/${id}`}>
-                <img src={capa} alt={titulo} className={styles.capa} />
-                <h2>{titulo}</h2>
-            </Link>
+            <Link className={styles.link} to={`/${id}`}>
+      <img src={capa} alt={titulo} className={styles.capa} />
+      <h2>{titulo}</h2>
+      </Link>
             <img 
                 src={icon} 
                 alt="Icono favorito"

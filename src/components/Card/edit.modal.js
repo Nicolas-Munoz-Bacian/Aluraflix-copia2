@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './modal.module.css';
+import styles from '../../pages/ModalEditarCard/modal.module.css';
 
 function EditModal({ initialData, onClose, onSave, onDelete }) {
     const [formData, setFormData] = useState(initialData);
