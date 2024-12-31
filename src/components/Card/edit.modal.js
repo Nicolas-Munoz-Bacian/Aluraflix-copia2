@@ -100,4 +100,5 @@ function EditModal({ initialData, onClose, onSave, onDelete }) {
     );
 }
 
+
 export default EditModal;

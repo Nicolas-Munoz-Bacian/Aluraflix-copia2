@@ -6,53 +6,105 @@ import iconNoFavorito from "../../components/Card/iconNoFavorito.png";
 import EditModal from "../../pages/ModalEditarCard/modal";
 import { Link } from 'react-router-dom';
 
-function Card({ id, capa, titulo, descripcion, video, onDelete, onSave, onClear }) {
+function Card({ id, capa, titulo, descripcion, video, onDelete, onSave, onClear, imagen, onPlay }) {
     const { favorito, agregarFavorito } = useFavoritosContext();
     const [showModal, setShowModal] = useState(false);
     const isFavorito = favorito.some(fav => fav.id === id);
     const icon = isFavorito ? iconFavorito : iconNoFavorito;
 
-    const handleEdit = () => {
-        setShowModal(true);
-    };
+// Manejar la edición del video
+const handleEdit = () => {
+    setShowModal(true);
+};
 
-    const handleDelete = () => {
-        if (onDelete) onDelete(id); // Llama a la función de eliminación pasada como prop
-    };
+// Manejar la eliminación del video
+const handleDelete = () => {
+    if (onDelete) onDelete(id); // Llama a la función de eliminación pasada como prop
+};
 
-    return (
-        <div className={styles.container}>
-            <Link className={styles.link} to={`/${id}`}>
-      <img src={capa} alt={titulo} className={styles.capa} />
-      <h2>{titulo}</h2>
-      </Link>
-            <img 
-                src={icon} 
-                alt="Icono favorito"
-                className={styles.favorito}
-                onClick={() => agregarFavorito({ id, titulo, capa })}
-            />
-            <button onClick={handleEdit} className={styles.button}>
-                Editar
-            </button>
-            <button onClick={handleDelete} className={styles.button}>
-                Eliminar
-            </button>
+const formatYouTubeURL = (url) => {
+    if (url && url.startsWith('http')) {
+        return url; 
+    } else if (url) {
+        return `https://www.youtube.com/watch?v=${url.split('watch?v=')[1]}`;
+    }
+    return ''; 
+};
 
-            {showModal && (
-                <EditModal
-                    initialData={{ id, titulo, capa, descripcion, video }}
-                    onClose={() => setShowModal(false)}
-                    onSave={(data) => {
-                        onSave(data);  // Llama a la función de guardar pasada como prop
-                        setShowModal(false);
-                    }}
-                    onDelete={handleDelete}
-                    onClear={onClear} // Pasa la función onClear al EditModal
+// Manejar la reproducción del video
+const handlePlayVideo = (event) => {
+    event.preventDefault(); // Prevenir la navegación por defecto
+    const formattedVideoUrl = formatYouTubeURL(video);
+    if (onPlay) {
+        onPlay(formattedVideoUrl);
+    } else {
+        window.open(formattedVideoUrl, "_blank");
+    }
+};
+
+// Manejar la redirección del video
+const handleRedirect = () => {
+    const formattedVideoUrl = formatYouTubeURL(video);
+    if (formattedVideoUrl) {
+        window.open(formattedVideoUrl, "_blank"); // Redirigir al reproductor
+    } else {
+        console.error('El video no se pudo formatear correctamente.'); // Manejo de error
+    }
+};
+
+// Definición de handleSave para agregar a la funcionalidad
+const handleSave = (data) => {
+    // Aquí puedes realizar la lógica para actualizar los datos del video
+    console.log("Datos guardados:", data);
+    onSave(data); // Llama a onSave que fue pasado como prop
+    setShowModal(false); // Cierra el modal después de guardar
+};
+
+return (
+    <div className={styles.container}>
+        <Link className={styles.link} to={`/${id}`} onClick={handlePlayVideo}></Link>
+        <Link className={styles.link} to={`/${id}`} onClick={handleRedirect}>
+            <Link className={styles.link} to={`/${id}`} onClick={(e) => {
+                handlePlayVideo(e); // Mantenemos la funcionalidad de reproducción
+            }}></Link>
+            <Link className={styles.link} to={`/${id}`} onClick={handlePlayVideo}>
+                <img 
+                    src={capa} 
+                    alt={titulo} 
+                    className={styles.imagen}
+                    onClick={handlePlayVideo} // Llama a la función para reproducir el video
                 />
-            )}
-        </div>
-    );
+                <h2>{titulo}</h2>
+            </Link>
+        </Link>
+
+        <img 
+            src={icon} 
+            alt="Icono favorito"
+            className={styles.favorito}
+            onClick={() => agregarFavorito({ id, titulo, capa })} // Manejar favoritos
+        />
+        <button onClick={handleEdit} className={styles.button}>
+            Editar
+        </button>
+        <button onClick={handleDelete} className={styles.button}>
+            Eliminar
+        </button>
+
+        {showModal && (
+            <EditModal
+                initialData={{ id, titulo, capa, descripcion, video }}
+                onClose={() => setShowModal(false)}
+                onSave={(data) => {
+                    onSave(data);  
+                    setShowModal(false);
+                }}
+                onDelete={handleDelete}
+                onClear={onClear} 
+            />
+        )}
+    </div>
+);
 }
 
 export default Card;

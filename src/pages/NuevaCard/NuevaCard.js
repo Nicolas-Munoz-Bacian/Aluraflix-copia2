@@ -1,72 +1,89 @@
 import React, { useState } from 'react';
 import Card from '../../components/Card';
-import EditModal from '../../pages/ModalEditarCard/modal'; // Asegúrate de que el nombre de `EditModal` es correcto
+import EditModal from '../../pages/ModalEditarCard/modal';
 import { enviarProducto } from '../../pages/ConexionAPI/API';
+import frontend from "../../pages/inicio/front end.png";
+import backend from "../../pages/inicio/back end.png";
+import innovacionYgestion from "../inicio/innovación y gestión.png";
+import styles from './NuevaCard.module.css'; // Asegúrate de que esta ruta sea correcta
+import videosData from "../../components/data/db.json"
 
-function NuevaCard({ initialVideos = [] }) {
-    const [videos, setVideos] = useState(initialVideos);
+function NuevaCard({ initialVideos = [], onUpdateVideos }) {
+    const [videos, setVideos] = useState(initialVideos); // Inicializa con videos pasados como prop
     const [showModal, setShowModal] = useState(false);
-    const [modalData, setModalData] = useState({ categorias: 'Front-End' });
-    const [currentVideoUrl, setCurrentVideoUrl] = useState('');
+    const [modalData, setModalData] = useState({ id: null, titulo: '', imagen: '', link: '', descripcion: '', categoria: 'Front-End' });
+
+    // State for form inputs
+    const [productName, setProductName] = useState('');
+    const [productPrice, setProductPrice] = useState('');
+    const [productImage, setProductImage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleNewVideo = () => {
-        setModalData({ categoria: 'Front-End' });
-        setShowModal(true);
+        setModalData({ id: null, titulo: '', imagen: '', link: '', descripcion: '', categoria: 'Front-End' }); // Limpia el modal
+        setShowModal(true); // Muestra el modal para agregar nuevo video
     };
 
     const handleSave = async (videoData) => {
-        const updatedVideos = [...videos, videoData];
-        setVideos(updatedVideos);
-        localStorage.setItem('videos', JSON.stringify(updatedVideos));
-        setShowModal(false);
+        let updatedVideos;
+
+        // Si hay un ID, considera que es una modificación
+        if (videoData.id) {
+            updatedVideos = videos.map(video => 
+                video.id === videoData.id ? videoData : video // Actualiza el video existente
+            );
+        } else {
+            videoData.id = new Date().getTime(); // Asigna un ID único si es un nuevo video
+            updatedVideos = [...videos, videoData]; // Agrega el nuevo video
+        }
+
+        setVideos(updatedVideos); // Actualiza la lista de videos sin eliminarlos
+        localStorage.setItem('videos', JSON.stringify(updatedVideos)); // Opcional: guarda en localStorage
+
         try {
-            // Crear objeto para enviar a la API
             const newVideoData = {
                 titulo: videoData.titulo,
-                categoria: videoData.categoria,
-                capa: videoData.capa, // Asegúrate de que este campo sea relevante
-                video: videoData.video,
+                imagen: videoData.imagen,
+                link: videoData.link,
                 descripcion: videoData.descripcion,
+                categoria: videoData.categoria,
             };
 
-            // Enviar el nuevo video a la API
-            const savedVideo = await enviarProducto(newVideoData);
-            const updatedVideos = [...videos, savedVideo]; // Actualiza con el video guardado
-            setVideos(updatedVideos);
-            localStorage.setItem('videos', JSON.stringify(updatedVideos)); // Guardar en localStorage
-
-            setShowModal(false);
+            // Solo si es un nuevo video, espera a enviar el producto
+            if (!videoData.id) {
+                const savedVideo = await enviarProducto(newVideoData);
+                setVideos(prevVideos => [...prevVideos, savedVideo]); // Guarda el nuevo video devuelto
+            }
         } catch (error) {
             console.error('Error al guardar el video:', error.message);
             alert('Ocurrió un error al guardar el video. Verifica los datos.');
         }
     };
 
+    // Función para eliminar un video por su ID
     const handleDelete = (videoId) => {
-        setVideos(prevVideos => prevVideos.filter(video => video.id !== videoId));
+        setVideos(prevVideos => prevVideos.filter(video => video.id !== videoId)); // Elimina el video seleccionado
     };
-    
+
+    // Función para limpiar los datos del modal
+    const handleClear = () => {
+        setModalData({ id: null, titulo: '', imagen: '', link: '', descripcion: '', categoria: 'Front-End' });
+        setShowModal(false); // Cierra el modal
+    };
+
+    // Categorías de videos
     const categorias = {
         "Front-End": videos.filter(video => video.categoria === 'Front-End'),
         "Back-End": videos.filter(video => video.categoria === 'Back-End'),
         "Innovación y Gestión": videos.filter(video => video.categoria === 'Innovación y Gestión'),
     };
 
-    const Player = ({ url }) => {
-        return (
-            <div>
-                {/* Renderizar el reproductor utilizando la URL */}
-                <iframe 
-                    width="560" 
-                    height="315" 
-                    src={url} 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen 
-                />
-            </div>
-        );
-    }
+    // Mapeo de categorías a imágenes
+    const categoryImages = {
+        "Front-End": frontend,
+        "Back-End": backend,
+        "Innovación y Gestión": innovacionYgestion,
+    };
 
     return (
         <div>
@@ -74,28 +91,38 @@ function NuevaCard({ initialVideos = [] }) {
             {showModal && (
                 <EditModal
                     initialData={modalData}
-                    onClose={() => setShowModal(false)}
-                    onSave={handleSave}
+                    onClose={handleClear} // Cierra el modal
+                    onSave={handleSave} // Función para guardar el video
                 />
             )}
-            {Object.entries(categorias).map(([categoria, videos]) => (
+           {Object.entries(categorias).map(([categoria, videos]) => (
                 <div key={categoria}>
-                    <h2>{categoria}</h2>
-                    {videos.map(video => (
-                        <Card
-                            key={video.id}
-                            {...video}
-                            onDelete={() => handleDelete(video.id)}
-                            onEdit={() => {
-                                setModalData(video);
-                                setShowModal(true);
-                            }}
-                        />
-                    ))}
+                    {/* Mostrar la imagen/banner de la categoría */}
+                    <img 
+                        src={categoryImages[categoria]} 
+                        alt={`Banner de ${categoria}`} 
+                        className={styles.banner} 
+                    />
+                   
+                    {videos.length > 0 ? ( // Verifica si hay videos para mostrar
+                        videos.map(video => (
+                            <Card
+                                key={video.id}
+                                {...video}
+                                onDelete={() => handleDelete(video.id)} // Elimina solo el video seleccionado
+                                onEdit={() => {
+                                    setModalData(video); // Prellena el modal con los datos del video existente
+                                    setShowModal(true); // Abre el modal para editar
+                                }}
+                            />
+                        ))
+                    ) : (
+                        <p>No hay videos en esta categoría.</p> // Mensaje si no hay videos en la categoría
+                    )}
                 </div>
             ))}
         </div>
-    );
+);
 }
 
 export default NuevaCard;
