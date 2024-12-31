@@ -67,16 +67,33 @@ return (
             <Link className={styles.link} to={`/${id}`} onClick={(e) => {
                 handlePlayVideo(e); // Mantenemos la funcionalidad de reproducción
             }}></Link>
-            <Link className={styles.link} to={`/${id}`} onClick={handlePlayVideo}>
-                <img 
-                    src={capa} 
-                    alt={titulo} 
-                    className={styles.imagen}
-                    onClick={handlePlayVideo} // Llama a la función para reproducir el video
-                />
-                <h2>{titulo}</h2>
-            </Link>
+            <img 
+                src={capa} 
+                alt={titulo} 
+                className={styles.imagen}
+                onClick={handlePlayVideo} // Llama a la función para reproducir el video
+            />
+            <h2>{titulo}</h2>
         </Link>
+        <Link className={styles.link} to={`/${id}`} onClick={handlePlayVideo}></Link>
+        <Link 
+            className={styles.link} 
+            to={`/${id}`} 
+            onClick={(e) => {
+                e.preventDefault(); // Prevenir la navegación predeterminada
+                handlePlayVideo(e); // Manejar la reproducción del video
+                handleRedirect(); // Llamar a handleRedirect en caso de que no haya reproducción
+            }}
+        ></Link>
+        <Link 
+            className={styles.link} 
+            to={`/${id}`} 
+            onClick={(e) => {
+                e.preventDefault(); // Prevenir la navegación predeterminada
+                handlePlayVideo(e); // Manejar la reproducción del video
+                handleRedirect(); // Llamar a handleRedirect en caso de que no haya reproducción
+            }}
+        ></Link>
 
         <img 
             src={icon} 
@@ -99,8 +116,6 @@ return (
                     onSave(data);  
                     setShowModal(false);
                 }}
-                onDelete={handleDelete}
-                onClear={onClear} 
             />
         )}
     </div>
