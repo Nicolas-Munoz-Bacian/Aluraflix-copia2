@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Card from '../../components/Card';
 import EditModal from '../../pages/ModalEditarCard/modal';
-import { enviarProducto } from '../../pages/ConexionAPI/API';
+import { enviarProducto, actualizarProducto } from '../../pages/ConexionAPI/API';
 import frontend from "../../pages/inicio/front end.png";
 import backend from "../../pages/inicio/back end.png";
 import innovacionYgestion from "../inicio/innovación y gestión.png";
@@ -18,6 +18,7 @@ function NuevaCard({ initialVideos = [], onUpdateVideos }) {
     const [productPrice, setProductPrice] = useState('');
     const [productImage, setProductImage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    
 
     const handleNewVideo = () => {
         setModalData({ id: null, titulo: '', imagen: '', link: '', descripcion: '', categoria: 'Front-End' }); // Limpia el modal
@@ -29,8 +30,10 @@ function NuevaCard({ initialVideos = [], onUpdateVideos }) {
 
         // Si hay un ID, considera que es una modificación
         if (videoData.id) {
+            // Si hay un ID, actualiza el video existente
+            await actualizarProducto(videoData.id, videoData); // Llama a la función para actualizar el video
             updatedVideos = videos.map(video => 
-                video.id === videoData.id ? videoData : video // Actualiza el video existente
+                video.id === videoData.id ? videoData : video // Actualiza el video existente en el estado local
             );
         } else {
             videoData.id = new Date().getTime(); // Asigna un ID único si es un nuevo video

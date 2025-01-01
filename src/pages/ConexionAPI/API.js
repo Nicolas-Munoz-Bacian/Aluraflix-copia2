@@ -10,7 +10,7 @@ export async function obtenerProductos() {
         return await response.json();
     } catch (error) {
         console.error('Error en la solicitud GET:', error);
-        throw error;
+        throw error; // Propaga el error para manejarlo posteriormente
     }
 }
 
@@ -27,10 +27,10 @@ export async function enviarProducto(producto) {
             throw new Error('Error al enviar el producto');
         }
 
-        return await response.json();
+        return await response.json(); // Retorna el producto guardado
     } catch (error) {
         console.error('Error al enviar producto:', error);
-        throw error;
+        throw error; // Propaga el error para manejarlo posteriormente
     }
 }
 
@@ -47,10 +47,10 @@ export async function actualizarProducto(id, producto) {
             throw new Error('Error al actualizar el producto');
         }
 
-        return await response.json();
+        return await response.json(); // Retorna el producto actualizado
     } catch (error) {
         console.error('Error al actualizar producto:', error);
-        throw error;
+        throw error; // Propaga el error para manejarlo posteriormente
     }
 }
 
@@ -66,6 +66,6 @@ export async function eliminarProducto(id) {
         }
     } catch (error) {
         console.error('Error al eliminar producto:', error);
-        throw error;
+        throw error; // Propaga el error para manejarlo posteriormente
     }
 }

@@ -53,7 +53,7 @@ function Inicio() {
   const handleUpdateVideos = (newVideo) => {
     setVideos((prevVideos) => [...prevVideos, newVideo]); // Agrega el nuevo video a la lista
     setShowNuevaCard(false); // Cierra el modal de NuevaCard
-  };
+};
 
   // Abre el modal de NuevaCard
   const handleNuevaCard = () => {

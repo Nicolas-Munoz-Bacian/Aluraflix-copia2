@@ -67,13 +67,15 @@ return (
             <Link className={styles.link} to={`/${id}`} onClick={(e) => {
                 handlePlayVideo(e); // Mantenemos la funcionalidad de reproducción
             }}></Link>
-            <img 
-                src={capa} 
-                alt={titulo} 
-                className={styles.imagen}
-                onClick={handlePlayVideo} // Llama a la función para reproducir el video
-            />
-            <h2>{titulo}</h2>
+            <Link className={styles.link} to={`/${id}`} onClick={handlePlayVideo}>
+                <img 
+                    src={capa} 
+                    alt={titulo} 
+                    className={styles.imagen}
+                    onClick={handlePlayVideo} // Llama a la función para reproducir el video
+                />
+                <h2>{titulo}</h2>
+            </Link>
         </Link>
         <Link className={styles.link} to={`/${id}`} onClick={handlePlayVideo}></Link>
         <Link 
