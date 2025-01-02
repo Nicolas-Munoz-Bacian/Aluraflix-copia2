@@ -16,9 +16,3 @@
     background-color: cyan; /* Cambia de color al pasar el cursor */
     color: black; /* Cambiar el color del texto para resaltar */
 }
-
-.link.active {
-    background-color: cyan; /* Color de fondo cuando la página está activa */
-    color: black; /* Color del texto cuando la página está activa */
-    border-color: white; /* Puede cambiar el color del borde si quieres */
-}

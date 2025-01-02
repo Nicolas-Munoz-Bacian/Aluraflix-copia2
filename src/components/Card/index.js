@@ -74,29 +74,11 @@ return (
                     className={styles.imagen}
                     onClick={handlePlayVideo} // Llama a la función para reproducir el video
                 />
-                <h2>{titulo}</h2>
+                <h2>{titulo}</h2><button onClick={handlePlayVideo} className={styles.button}>
+            Reproducir
+        </button>
             </Link>
         </Link>
-        <Link className={styles.link} to={`/${id}`} onClick={handlePlayVideo}></Link>
-        <Link 
-            className={styles.link} 
-            to={`/${id}`} 
-            onClick={(e) => {
-                e.preventDefault(); // Prevenir la navegación predeterminada
-                handlePlayVideo(e); // Manejar la reproducción del video
-                handleRedirect(); // Llamar a handleRedirect en caso de que no haya reproducción
-            }}
-        ></Link>
-        <Link 
-            className={styles.link} 
-            to={`/${id}`} 
-            onClick={(e) => {
-                e.preventDefault(); // Prevenir la navegación predeterminada
-                handlePlayVideo(e); // Manejar la reproducción del video
-                handleRedirect(); // Llamar a handleRedirect en caso de que no haya reproducción
-            }}
-        ></Link>
-
         <img 
             src={icon} 
             alt="Icono favorito"

@@ -10,7 +10,7 @@ function EditModal({ initialData, onClose, onSave, onDelete }) {
     };
 
     const saveChanges = () => {
-        onSave(formData);
+        onSave(formData); // Llama a la función onSave pasada como prop
         onClose();
     };
 
@@ -72,7 +72,7 @@ function EditModal({ initialData, onClose, onSave, onDelete }) {
                         onChange={handleChange}
                     />
                 </div>
-                <button onClick={saveChanges}>Guardar</button>
+                <button onClick={saveChanges}>Guardar</button> {/* Llama a saveChanges */}
                 <button onClick={clearChanges}>Limpiar</button>
                 <button onClick={onClose}>Cerrar</button>
             </div>
